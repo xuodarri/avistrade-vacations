@@ -1,0 +1,294 @@
+@import "tailwindcss";
+
+/*
+ * Дизайн-система «Отпуска» (26.10.2026): светлая, в духе Apple 2026.
+ * Примитивы — src/components/kit (описание и правило концентричности — kit/README.md).
+ * Старые имена токенов (--line, --header, --info-bg…) и классы .card .btn .chip .tbl оставлены
+ * для экранов, которые ещё не переведены на kit: значения перекрашены под новый стиль.
+ */
+:root {
+  /* поверхности */
+  --bg: #F5F5F7;
+  --surface: #FFFFFF;
+  --surface-alt: #F7F7F9; /* заливка внутри карточки: строки, ячейки, неактивные области */
+  --fill: rgba(120, 120, 128, 0.12); /* заливка контролов: segmented-трек, secondary-кнопка */
+  --fill-2: rgba(120, 120, 128, 0.08);
+  --fill-3: rgba(120, 120, 128, 0.05);
+  --line: rgba(0, 0, 0, 0.09); /* волосяная рамка */
+  --line-soft: rgba(0, 0, 0, 0.055);
+  --header: #1D1D1F; /* тёмные плашки и подсказки (Tooltip), шапка приложения теперь светлая */
+  --header-fg: #FFFFFF;
+  --header-muted: #A1A1A6;
+  --glass: rgba(250, 250, 252, 0.72);
+  --header-h: 64px; /* высота шапки: от неё считают липкие панели, Гант и всё, что выезжает */
+
+  /* текст */
+  --text: #1D1D1F;
+  --text-2: #3A3A3C;
+  --muted: #6E6E73;
+  --muted-2: #8E8E93;
+
+  /*
+   * Акцент — фирменный мятный Авистрейда #00AC80: действия и выбор (основные кнопки, переключатели,
+   * галочки, фокус). На белом он светлый (контраст с белым текстом 2,9:1), поэтому заливки кнопок
+   * и текст-акцент — тёмный вариант --accent-strong (4,5:1), а чистый мятный — у знака, колец и
+   * крупных заливок без текста. Свой отпуск в календаре — синий --vacation, «согласовано» — зелёный
+   * --ok: три смысла, три разных цвета.
+   */
+  --brand: #00AC80;
+  --accent: #00AC80;
+  --accent-strong: #00876A;
+  --accent-hover: #007A60;
+  --accent-press: #006B54;
+  --accent-bg: rgba(0, 172, 128, 0.12);
+  --accent-bg-hover: rgba(0, 172, 128, 0.19);
+  --ok: #1F9D4C;
+  --ok-bg: rgba(52, 199, 89, 0.14);
+  --warn: #C26A00;
+  --warn-bg: rgba(255, 159, 10, 0.16);
+  --bad: #E0342B;
+  --bad-bg: rgba(255, 59, 48, 0.11);
+  --info: #007AFF;
+  --info-bg: rgba(0, 122, 255, 0.10);
+
+  /* календарь: свой отпуск и выбор дат — синие, чтобы не путать с «согласовано» и с кнопками */
+  --vacation: #0A84FF;
+  --vacation-strong: #0071E3;
+  --vacation-bg: rgba(10, 132, 255, 0.14);
+  --weekend: #E0342B; /* выходные и праздники — красные; праздник ещё и подчёркнут */
+  --load-free: #E6F6EA; /* загрузка группы: свободно */
+  --load-one: #FFEFC2; /* осталось одно место */
+  --load-full: #FFDCD8; /* мест нет */
+  --holiday: #FFE8E6; /* фон праздника на полосах и шкалах */
+
+  /* радиусы: шкала концентричности 28 → 20 → 12 → пилюля (правило — kit/README.md) */
+  --r-panel: 28px;
+  --r-block: 20px;
+  --r-control: 12px;
+  --r-thumb: 9px;
+  --r-pill: 9999px;
+  --radius: 20px; /* совместимость: .card и экраны со скруглением var(--radius) */
+  --radius-sm: 12px;
+
+  /* тени: многослойные, нейтральные, без цветного свечения */
+  --shadow-1: 0 0 0 0.5px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.035);
+  --shadow-2: 0 0 0 0.5px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.04), 0 10px 28px rgba(0, 0, 0, 0.07);
+  --shadow-3: 0 0 0 0.5px rgba(0, 0, 0, 0.06), 0 8px 16px rgba(0, 0, 0, 0.06), 0 24px 64px rgba(0, 0, 0, 0.14);
+  --ring: 0 0 0 4px rgba(0, 172, 128, 0.26);
+
+  /* движение */
+  --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-1: 140ms;
+  --dur-2: 240ms;
+  --dur-3: 380ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-1: 0ms; --dur-2: 0ms; --dur-3: 0ms; }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-alt: var(--surface-alt);
+  --color-fill: var(--fill);
+  --color-fill-2: var(--fill-2);
+  --color-fill-3: var(--fill-3);
+  --color-line: var(--line);
+  --color-line-soft: var(--line-soft);
+  --color-header: var(--header);
+  --color-header-muted: var(--header-muted);
+  --color-text: var(--text);
+  --color-text-2: var(--text-2);
+  --color-muted: var(--muted);
+  --color-muted-2: var(--muted-2);
+  --color-brand: var(--brand);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-bg: var(--accent-bg);
+  --color-ok: var(--ok);
+  --color-ok-bg: var(--ok-bg);
+  --color-warn: var(--warn);
+  --color-warn-bg: var(--warn-bg);
+  --color-bad: var(--bad);
+  --color-bad-bg: var(--bad-bg);
+  --color-info: var(--info);
+  --color-info-bg: var(--info-bg);
+  --color-vacation: var(--vacation);
+  --color-vacation-strong: var(--vacation-strong);
+  --color-vacation-bg: var(--vacation-bg);
+  --color-weekend: var(--weekend);
+  --color-load-free: var(--load-free);
+  --color-load-one: var(--load-one);
+  --color-load-full: var(--load-full);
+  --color-holiday: var(--holiday);
+  --radius-panel: var(--r-panel);
+  --radius-block: var(--r-block);
+  --radius-control: var(--r-control);
+  --shadow-1: var(--shadow-1);
+  --shadow-2: var(--shadow-2);
+  --shadow-3: var(--shadow-3);
+  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  /* место под полосу прокрутки есть всегда: ширина страницы не прыгает ни между страницами,
+     ни при открытии Dialog/Sheet (блокировка прокрутки — overflow: hidden на html, без padding-right) */
+  scrollbar-gutter: stable;
+  background: var(--bg); /* фон под полосой — цвет страницы, а не белый системный */
+}
+
+/* ---------- полоса прокрутки: часть страницы, в стиле kit ----------
+   Тонкая, без стрелок, прозрачная дорожка, ползунок-капсула; при наведении темнее и чуть шире.
+   Действует на все прокручиваемые области; .scroll / .scroll-x — для внутренних областей kit и экранов
+   (плюс overscroll-behavior: contain, чтобы прокрутка списка не тянула страницу). */
+::-webkit-scrollbar { width: 10px; height: 10px; background: transparent; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-corner { background: transparent; }
+::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  background-clip: padding-box;
+  border: 3px solid transparent;
+  border-radius: 9999px;
+  min-height: 32px;
+}
+::-webkit-scrollbar-thumb:hover { background-color: rgba(0, 0, 0, 0.36); border-width: 2px; }
+::-webkit-scrollbar-thumb:active { background-color: rgba(0, 0, 0, 0.45); border-width: 2px; }
+@supports (-moz-appearance: none) {
+  * { scrollbar-width: thin; scrollbar-color: rgba(0, 0, 0, 0.24) transparent; }
+}
+.scroll, .scroll-x { overscroll-behavior: contain; }
+.scroll { overflow-y: auto; }
+.scroll-x { overflow-x: auto; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  letter-spacing: -0.006em;
+  font-feature-settings: "cv11", "ss01";
+  -webkit-font-smoothing: antialiased;
+}
+/* в base-слое: утилиты Tailwind (tracking-*, shadow-*) должны их перебивать */
+@layer base {
+  h1, h2, h3 { letter-spacing: -0.022em; }
+  ::selection { background: rgba(0, 172, 128, 0.22); }
+  :focus-visible { outline: none; box-shadow: var(--ring); }
+}
+
+@layer utilities {
+  .tnum { font-variant-numeric: tabular-nums; }
+  .r-in { border-radius: var(--r-in, var(--r-control)); } /* радиус «внутри текущей Surface» */
+  .glass { background: var(--glass); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); }
+  .press { transition: transform var(--dur-1) var(--ease-out), background-color var(--dur-1), box-shadow var(--dur-1), color var(--dur-1), opacity var(--dur-1); }
+  .press:active:not(:disabled) { transform: scale(0.97); }
+}
+
+/* ---------- совместимость: классы экранов до перехода на kit ---------- */
+@layer components {
+  .card {
+    background: var(--surface);
+    border: 0;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-1);
+  }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    height: 34px; padding: 0 14px; border-radius: var(--r-control);
+    border: 0; background: var(--fill-2); color: var(--text);
+    font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap;
+    transition: transform var(--dur-1) var(--ease-out), background-color var(--dur-1);
+  }
+  .btn:hover:not(:disabled) { background: var(--fill); }
+  .btn:active:not(:disabled) { transform: scale(0.97); }
+  .btn:disabled { opacity: 0.45; cursor: default; }
+  .btn-primary { background: var(--accent-strong); color: #fff; }
+  .btn-primary:hover:not(:disabled) { background: var(--accent-hover); }
+  .chip {
+    display: inline-flex; align-items: center; gap: 5px;
+    height: 22px; padding: 0 9px; border-radius: var(--r-pill);
+    font-size: 12px; font-weight: 500; white-space: nowrap; letter-spacing: -0.003em;
+  }
+  .chip-ok { background: var(--ok-bg); color: var(--ok); }
+  .chip-warn { background: var(--warn-bg); color: var(--warn); }
+  .chip-bad { background: var(--bad-bg); color: var(--bad); }
+  .chip-info { background: var(--info-bg); color: var(--info); }
+  .chip-muted { background: var(--fill-2); color: var(--muted); }
+  .tbl { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px; }
+  .tbl th { text-align: left; font-weight: 500; color: var(--muted); font-size: 12px; padding: 12px 16px 8px; border-bottom: 0.5px solid var(--line); background: transparent; }
+  .tbl td { padding: 11px 16px; border-bottom: 0.5px solid var(--line-soft); vertical-align: top; }
+  .tbl tr:last-child td { border-bottom: 0; }
+  .tbl tbody tr { transition: background-color var(--dur-1); }
+  .tbl tbody tr:hover { background: var(--fill-3); }
+}
+
+/* ---------- выделение диапазона в календаре (Calendar.tsx, RangeLayer) ----------
+   Капсулы по неделям и круги краёв — слой под днями. Появляются и гаснут одним куском (opacity и
+   transform), при перетаскивании края едут (left, width). Подкраска и точки дней внутри выделения
+   гаснут тем же кадром и с тем же duration — через data-range-active на сетке. Фон и радиус ячеек
+   не анимируются никогда. */
+.kit-range-seg, .kit-range-dot {
+  opacity: 0;
+  transition: opacity var(--dur-2) var(--ease-spring), transform var(--dur-2) var(--ease-spring);
+}
+.kit-range-seg { transform: scaleX(0.96); }
+.kit-range-dot { transform: scale(0.8); }
+/* появление — анимацией при монтировании, исчезновение — переходом при снятии data-on */
+.kit-range-seg[data-on] { opacity: 1; transform: none; animation: kit-seg-in var(--dur-2) var(--ease-spring) backwards; }
+.kit-range-dot[data-on] { opacity: 1; transform: none; animation: kit-dot-in var(--dur-2) var(--ease-spring) backwards; }
+.kit-range-seg[data-on].kit-range-preview { opacity: 0.6; }
+.kit-range-dot[data-on][data-lift] { transform: scale(1.06); box-shadow: 0 2px 4px rgba(0,0,0,0.08), 0 8px 18px rgba(10,132,255,0.3); }
+.kit-range-seg[data-move], .kit-range-dot[data-move] {
+  transition: opacity var(--dur-2) var(--ease-spring), transform var(--dur-2) var(--ease-spring),
+    left var(--dur-1) var(--ease-out), top var(--dur-1) var(--ease-out), width var(--dur-1) var(--ease-out);
+}
+@keyframes kit-seg-in { from { opacity: 0; transform: scaleX(0.96); } }
+@keyframes kit-dot-in { from { opacity: 0; transform: scale(0.8); } }
+.kit-day-bg, .kit-day-dot { opacity: var(--bg-op, 1); transition: opacity var(--dur-2) var(--ease-spring); }
+.kit-day-dot { opacity: 1; }
+[data-range-active] > .kit-day[data-in-range] .kit-day-bg,
+[data-range-active] > .kit-day[data-in-range] .kit-day-dot { opacity: 0; }
+.kit-day-btn { transition: transform var(--dur-1) var(--ease-out), box-shadow var(--dur-1), opacity var(--dur-1), color var(--dur-2) var(--ease-spring); }
+
+/* перенос перетаскиванием в календаре: экран ставит data-grabbing на предка сетки */
+[data-grabbing], [data-grabbing] [data-day] { cursor: grabbing !important; }
+
+/* ---------- анимации kit ---------- */
+@keyframes kit-pop-in { from { opacity: 0; transform: translateY(var(--pop-dy, -4px)) scale(0.97); } to { opacity: 1; transform: none; } }
+@keyframes kit-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes kit-sheet-in { from { transform: translateX(32px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes kit-dialog-in { from { opacity: 0; transform: translateY(8px) scale(0.96); } to { opacity: 1; transform: none; } }
+@keyframes kit-toast-in { from { opacity: 0; transform: translateY(16px) scale(0.96); } to { opacity: 1; transform: none; } }
+@keyframes kit-tip-in { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: none; } }
+@keyframes kit-tip-out { from { opacity: 1; transform: none; } to { opacity: 0; transform: scale(0.98); } }
+@keyframes kit-spin { to { transform: rotate(360deg); } }
+@keyframes kit-shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+@keyframes kit-month-next { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: none; } }
+@keyframes kit-month-prev { from { opacity: 0; transform: translateX(-14px); } to { opacity: 1; transform: none; } }
+
+.kit-pop { animation: kit-pop-in var(--dur-2) var(--ease-spring) both; transform-origin: var(--pop-origin, top); }
+.kit-fade { animation: kit-fade-in var(--dur-2) var(--ease-out) both; }
+.kit-sheet { animation: kit-sheet-in var(--dur-3) var(--ease-spring) both; }
+.kit-dialog { animation: kit-dialog-in var(--dur-3) var(--ease-spring) both; }
+.kit-toast { animation: kit-toast-in var(--dur-3) var(--ease-spring) both; }
+/* подсказка: только появление и исчезновение от стрелки; позиция не анимируется */
+.kit-tip-in { animation: kit-tip-in var(--dur-1) var(--ease-out) both; transform-origin: var(--tip-origin, 50% 100%); }
+.kit-tip-out { animation: kit-tip-out 120ms var(--ease-out) both; transform-origin: var(--tip-origin, 50% 100%); }
+.kit-month-next { animation: kit-month-next var(--dur-2) var(--ease-out) both; }
+.kit-month-prev { animation: kit-month-prev var(--dur-2) var(--ease-out) both; }
+.kit-skeleton {
+  background: linear-gradient(90deg, var(--fill-2) 25%, var(--fill-3) 50%, var(--fill-2) 75%);
+  background-size: 200% 100%;
+  animation: kit-shimmer 1.6s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .kit-pop, .kit-tip-in, .kit-tip-out, .kit-range-seg, .kit-range-dot, .kit-fade, .kit-sheet, .kit-dialog, .kit-toast, .kit-month-next, .kit-month-prev { animation: none; }
+  .kit-skeleton { animation: none; }
+  .press:active:not(:disabled), .btn:active:not(:disabled) { transform: none; }
+}
+
+/* kit v7.1: сплошная шапка */

@@ -1,0 +1,18 @@
+# Выкладка демо на Render (бесплатный тариф): New → Blueprint → этот репозиторий.
+# Постоянного диска на бесплатном тарифе нет: база создаётся с демо-данными при запуске
+# и сбрасывается, когда сервис засыпает после 15 минут без запросов.
+services:
+  - type: web
+    name: avistrade-vacations
+    runtime: docker
+    plan: free
+    region: frankfurt
+    dockerContext: ./web
+    dockerfilePath: ./web/Dockerfile
+    healthCheckPath: /about
+    autoDeploy: true
+    envVars:
+      - key: DB_PATH
+        value: /tmp/vacations.db
+      - key: DEMO_TODAY
+        value: "2026-10-27"

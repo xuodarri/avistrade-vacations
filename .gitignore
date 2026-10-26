@@ -1,0 +1,17 @@
+﻿# В репозиторий идёт только код прототипа
+/*
+!/web/
+!/README.md
+!/render.yaml
+!/.gitignore
+
+# данные и сборка прототипа
+web/node_modules/
+web/.next/
+web/data/
+web/.docker-data/
+web/*.tsbuildinfo
+web/.env*
+*.log
+.DS_Store
+web/AGENTS.md
