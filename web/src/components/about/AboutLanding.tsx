@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import {
   ArrowRight, Ban, Check, ChevronRight, CircleCheck, Cloud, Database, ExternalLink, Handshake, History, Info, Layers,
-  Lock, Plug, Printer, Send, Server, ShieldCheck, Sparkles, Stamp, TriangleAlert, User, Users, type LucideIcon,
+  Lock, Plug, Printer, Send, Server, ShieldCheck, Smartphone, Sparkles, Stamp, TriangleAlert, User, Users, type LucideIcon,
 } from "lucide-react";
 import { Pill, Surface } from "@/components/kit";
 import { SubNav } from "./SubNav";
@@ -395,7 +395,7 @@ function Abbreviations() {
 /* ——— Дорожная карта ——— */
 
 const ROAD_ICONS: Record<(typeof ROADMAP)[number]["icon"], LucideIcon> = {
-  plug: Plug, handshake: Handshake, send: Send, printer: Printer, sparkles: Sparkles, layers: Database,
+  plug: Plug, phone: Smartphone, handshake: Handshake, send: Send, printer: Printer, sparkles: Sparkles, layers: Database,
 };
 
 function Roadmap() {
